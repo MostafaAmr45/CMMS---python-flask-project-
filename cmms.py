@@ -7,7 +7,7 @@ import time
 mydb = mysql.connector.connect(
    host="localhost",
    user="root",
-   passwd="",
+   passwd="mysql",
    database="cmms"
    )
 mycursor = mydb.cursor()
@@ -68,7 +68,7 @@ def wo():
             return render_template('work_order.html')   
 
    else:
-      q = "SELECT wo.id, type, description, plannedDate, priority, employee.employee_name, equipment.equipment_name FROM wo \
+      q = "SELECT wo.id, type, description, plannedDate, priority, employee.employee_name, equipment.equipment_name, equipment.department, equipment.serial_number FROM wo \
             JOIN employee ON employee.id = wo.assigned_technician_id JOIN equipment ON equipment.id = wo.equipment_id WHERE state = 'active'"
       mycursor.execute(q)
       row_headers=[x[0] for x in mycursor.description] #this will extract row headers
@@ -85,7 +85,7 @@ def completed_wo():
    if request.method == 'POST':
       return redirect('/wo')      
    else:
-      q = "SELECT wo.id, type, description, plannedDate, actualDate, priority, employee.employee_name, equipment.equipment_name FROM wo \
+      q = "SELECT wo.id, type, description, plannedDate, actualDate, priority, employee.employee_name, equipment.equipment_name, equipment.department, equipment.serial_number FROM wo \
             JOIN employee ON employee.id = wo.assigned_technician_id JOIN equipment ON equipment.id = wo.equipment_id WHERE state = 'done'"
       mycursor.execute(q)
       row_headers=[x[0] for x in mycursor.description] #this will extract row headers
@@ -117,7 +117,7 @@ def ppm():
    if request.method == 'POST':
       return render_template('sign_in.html')
    else:
-      q = "SELECT ppm.id, wo.actualDate, employee.employee_name, equipment.equipment_name, chasis_housing, casters_brakes, AC_plug, \
+      q = "SELECT ppm.id, wo.actualDate, employee.employee_name, equipment.equipment_name, equipment.department, equipment.serial_number, chasis_housing, casters_brakes, AC_plug, \
            line_cord, circuitBreaker_fuse, tubes_hoses_bulbs, labeling, transducer, control_switch FROM ppm JOIN wo ON ppm.wo_id = \
            wo.id JOIN employee ON wo.assigned_technician_id = employee.id JOIN equipment ON wo.equipment_id = equipment.id"
       mycursor.execute(q)
@@ -135,7 +135,7 @@ def inspection():
    if request.method == 'POST':
       return render_template('sign_in.html')
    else:
-      q = "SELECT incpection.id, wo.actualDate, employee.employee_name, equipment.equipment_name, physicalCondition, \
+      q = "SELECT incpection.id, wo.actualDate, employee.employee_name, equipment.equipment_name, equipment.department, equipment.serial_number, physicalCondition, \
            batteryWells_batteries, cablePort, functionality FROM incpection JOIN wo ON incpection.wo_id = \
            wo.id JOIN employee ON wo.assigned_technician_id = employee.id JOIN equipment ON wo.equipment_id = equipment.id"
       mycursor.execute(q)
@@ -153,7 +153,7 @@ def repair():
    if request.method == 'POST':
       return render_template('sign_in.html')
    else:
-      q = "SELECT repair.id, wo.actualDate, employee.employee_name, equipment.equipment_name, malfunction, \
+      q = "SELECT repair.id, wo.actualDate, employee.employee_name, equipment.equipment_name, equipment.department, equipment.serial_number, malfunction, \
       status FROM repair JOIN wo ON repair.wo_id = wo.id JOIN employee ON wo.assigned_technician_id = \
       employee.id JOIN equipment ON wo.equipment_id = equipment.id"
       mycursor.execute(q)
