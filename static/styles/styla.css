@@ -1,0 +1,27 @@
+/*tr:hover
+{
+	
+}*/
+th:hover
+{
+	background-color: rgba(0, 0, 0,0.8); ;
+	color: white;
+}
+td:hover
+{
+	background-color: rgba(15, 92, 255,0.8);
+	color: white;
+	cursor: 
+}
+
+.table-striped
+{
+	border: 1px solid rgba(0,0,0,0.5);
+	width: 400px;
+	margin: 0 auto;
+
+	margin-top: 40px;
+	margin-bottom: 40px;
+	
+}
+
